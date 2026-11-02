@@ -1,0 +1,422 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap');
+
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+
+    background: linear-gradient(
+        135deg,
+        #ffffff 0%,
+        #fffde7 -5%,
+        #fff59d 54%
+    );
+
+    font-family: 'Arial', sans-serif;
+}
+
+/* --- SPLIT SCREEN LAYOUT --- */
+
+.split-screen {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+.visualizer-half {
+    width: 50%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.lyrics-half {
+    width: 50%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 0 40px;
+    box-sizing: border-box;
+}
+
+/* --- VISUALIZER LAYOUT --- */
+
+.box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    transform: scale(0.85);
+    gap: 0px;
+}
+
+/* Image container */
+
+.container {
+    width: 380px;
+    height: 380px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(
+        45deg,
+        #ffe082 0%,
+        #ffca28 100%
+    );
+
+    border-radius: 10px;
+
+    box-shadow: 0px 10px 30px rgba(0,0,0,0.15);
+
+    z-index: 2;
+}
+
+/* Image */
+
+img {
+    display: block;
+
+    width: 240px;
+    height: 240px;
+
+    object-fit: cover;
+    border-radius: 0;
+
+    border: 4px solid white;
+
+    transition: none;
+    will-change: transform;
+    transform-origin: center center;
+}
+
+/* --- VISUALIZER BARS --- */
+
+.left,
+.right {
+    height: 380px;
+    width: 120px;
+}
+
+.bar {
+    height: 6px;
+    width: 20px;
+
+    flex-shrink: 0;
+
+    transition: none;
+
+    will-change: width;
+}
+
+.left .bar {
+    transform-origin: right;
+
+    background: linear-gradient(
+        270deg,
+        white,
+        #ffca28
+    );
+
+    border-radius: 5px 0 0 5px;
+}
+
+.right .bar {
+    transform-origin: left;
+
+    background: linear-gradient(
+        90deg,
+        white,
+        #ffca28
+    );
+
+    border-radius: 0 5px 5px 0;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+
+    align-items: end;
+    gap: 7px;
+    justify-content: center;
+
+    margin-right: -5px;
+}
+
+.right {
+    display: flex;
+    flex-direction: column;
+
+    align-items: start;
+    gap: 7px;
+    justify-content: center;
+
+    margin-left: -5px;
+}
+
+/* --- AUDIO PLAYER & TITLE --- */
+
+.audio-container {
+    width: 380px;
+
+    background: linear-gradient(
+        135deg,
+        #ffdc78 0%,
+        #ffc94d 55%,
+        #ffbd2e 100%
+    );
+
+    margin: 20px auto 0;
+
+    text-align: center;
+    padding: 15px 0;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0px 0px 25px rgba(255, 215, 0, 0.5),
+        0px 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Audio controls */
+
+audio::-webkit-media-controls-panel {
+    background: linear-gradient(
+        90deg,
+        #ffe08a 0%,
+        #ffd052 50%,
+        #ffc239 100%
+    );
+}
+
+audio {
+    width: 85%;
+    border-radius: 30px;
+}
+
+/* Song title */
+
+h1 {
+    font-family: 'Playfair Display', serif;
+
+    font-size: 38px;
+    margin: 15px 0 5px 0;
+
+    color: #fff;
+
+    text-shadow:
+        0px 0px 15px rgba(255, 200, 0, 0.9),
+        2px 2px 4px rgba(0,0,0,0.2);
+}
+
+/* =========================================
+   DANDELIONS - DEFAULT LYRICS THEME
+========================================= */
+
+#lyrics-display {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-wrap: wrap;
+
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+
+    column-gap: 0.30em;
+    row-gap: 0.22em;
+
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 3.8vw, 4rem);
+    font-weight: 700;
+    line-height: 1.4;
+
+    text-align: center;
+    color: #754512;
+
+    text-shadow: none;
+    margin: 0;
+}
+
+
+/* =========================================
+   NORMAL LYRIC WORDS
+========================================= */
+
+.lyric-word {
+    display: inline-flex;
+    white-space: nowrap;
+    align-items: baseline;
+    opacity: 0;
+    position: relative;
+}
+
+.lyric-word.is-visible {
+    opacity: 1;
+}
+
+
+/* =========================================
+   SPECIAL HIGHLIGHT WORDS
+   NAME + GAME
+========================================= */
+
+.lyric-word.lyric-highlight {
+    /* Keep the word in the normal sentence flow */
+    justify-content: center;
+
+    /* Slightly larger text */
+    font-size: 1.30em;
+    font-weight: 700;
+
+    /* Golden amber instead of brown */
+    color: #C58A00;
+
+    position: relative;
+    isolation: isolate;
+}
+
+
+/* =========================================
+   INDIVIDUAL LETTERS
+========================================= */
+
+.lyric-letter {
+    display: inline-block;
+
+    opacity: 0;
+
+    transform: translateY(12px) scale(0.75);
+}
+
+
+/* Same letter-by-letter animation for ALL words */
+
+.lyric-word.is-visible .lyric-letter {
+    animation: letterPop 0.32s
+        cubic-bezier(0.175, 0.885, 0.32, 1.275)
+        forwards;
+}
+
+
+/* =========================================
+   LETTER POP ANIMATION
+========================================= */
+
+@keyframes letterPop {
+
+    0% {
+        opacity: 0;
+        transform: translateY(12px) scale(0.75);
+    }
+
+    70% {
+        opacity: 1;
+        transform: translateY(-3px) scale(1.12);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+}
+
+/* =========================================
+   REAL GOLDEN PARTICLE EFFECT
+========================================= */
+
+.lyric-word.lyric-highlight {
+    position: relative;
+    overflow: visible;
+    isolation: isolate;
+}
+
+/* =========================================
+   GOLDEN SPARKLES AROUND THE ENTIRE WORD
+========================================= */
+
+.lyric-sparkle {
+    position: absolute;
+
+    /* Position determined individually by JavaScript */
+    left: var(--sparkle-left);
+    top: var(--sparkle-top);
+
+    width: var(--sparkle-size, 5px);
+    height: var(--sparkle-size, 5px);
+
+    background: radial-gradient(
+        circle,
+        #FFF9D6 0%,
+        #FFD700 45%,
+        #E6A700 100%
+    );
+
+    clip-path: polygon(
+        50% 0%,
+        62% 38%,
+        100% 50%,
+        62% 62%,
+        50% 100%,
+        38% 62%,
+        0% 50%,
+        38% 38%
+    );
+
+    opacity: 0;
+    pointer-events: none;
+    z-index: 5;
+
+    animation: sparkleBurst 850ms ease-out forwards;
+
+    animation-delay: var(--sparkle-delay, 0ms);
+}
+
+
+@keyframes sparkleBurst {
+
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.2);
+    }
+
+    25% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.15);
+    }
+
+    100% {
+        opacity: 0;
+        transform:
+            translate(
+                calc(-50% + var(--sparkle-x)),
+                calc(-50% + var(--sparkle-y))
+            )
+            scale(0.15)
+            rotate(120deg);
+    }
+
+}
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .lyric-word.is-visible .lyric-letter {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+
+}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>DANDELIONS</title>
+
+    <link rel="stylesheet" href="dandelions.css">
+
+    <!-- Liricle library for enhanced LRC lyrics -->
+    <script src="https://cdn.jsdelivr.net/npm/liricle"></script>
+</head>
+
+<body>
+
+    <div class="split-screen">
+
+        <!-- LEFT HALF: Audio Visualizer -->
+        <div class="visualizer-half">
+
+            <div class="box">
+
+                <div class="left">
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                </div>
+
+                <div class="container" id="imgContainer">
+                    <img
+                        src="assets/dandelions.jpeg"
+                        id="image"
+                        alt="Dandelions"
+                    >
+                </div>
+
+                <div class="right">
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                    <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                </div>
+
+            </div>
+
+            <div class="audio-container">
+
+                <audio
+                    src="assets/dandelions.mpeg"
+                    controls
+                    id="audio"
+                ></audio>
+
+                <h1>DANDELIONS</h1>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT HALF: Synchronized Lyrics -->
+        <div class="lyrics-half">
+
+            <h2 id="lyrics-display">...</h2>
+
+        </div>
+
+    </div>
+
+    <script src="dandelions.js"></script>
+
+</body>
+</html>
