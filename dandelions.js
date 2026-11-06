@@ -5,6 +5,8 @@ const leftBars = document.querySelectorAll(".left .bar");
 const rightBars = document.querySelectorAll(".right .bar");
 
 const lyricsDisplay = document.getElementById("lyrics-display");
+// Track every seed animation: natural seeds + lyric-triggered seeds.
+const seedAnimations = new Set();
 
 
 // ============================================================
@@ -363,6 +365,8 @@ function renderLine(line) {
 
     lyricsDisplay.replaceChildren();
 
+    lyricsDisplay.classList.remove("mine-spotlight-active");
+
     const words = Array.isArray(line.words)
         ? line.words
         : [];
@@ -372,59 +376,115 @@ function renderLine(line) {
         words.forEach(word => {
 
             const wordSpan = document.createElement("span");
-
             wordSpan.className = "lyric-word";
-
-
-            // Identify words that need special styling.
 
             const cleanWord = String(word.text || "")
                 .trim()
                 .toLowerCase()
                 .replace(/[^a-z0-9]/g, "");
 
+            const isMineWord = cleanWord === "mine";
+            const isLoveWord = cleanWord === "love";
+            const isSmileWord = cleanWord === "smile";
+            const isGodWord = cleanWord === "god";
+            const isDandelionsWord = cleanWord === "dandelions";
+            const isNameOrGame = ["name", "game"].includes(cleanWord);
 
-            // Apply the reusable highlight theme.
 
-            const highlightedWords = ["name", "game"];
-
-            if (highlightedWords.includes(cleanWord)) {
-
+            // Existing highlights.
+            if (isNameOrGame || isMineWord) {
                 wordSpan.classList.add("lyric-highlight");
+            }
 
+            if (isMineWord) {
+                wordSpan.classList.add("lyric-mine");
+            }
+
+            if (isLoveWord) {
+                wordSpan.classList.add("lyric-love");
+            }
+
+            if (isGodWord) {
+                wordSpan.classList.add("lyric-god");
+            }
+
+            // SMILE uses the same highlight and spotlight system as MINE.
+            if (isSmileWord) {
+                wordSpan.classList.add(
+                    "lyric-smile",
+                    "lyric-highlight"
+                );
+            }
+
+            if (isDandelionsWord) {
+                wordSpan.classList.add("lyric-dandelions");
             }
 
 
-            wordSpan.dataset.time =
-                String(Number(word.time));
+            wordSpan.dataset.time = String(Number(word.time));
 
 
-            // Split the word into individual letters.
+            // Capitalise special words.
+            const displayText =
+                (isMineWord || isDandelionsWord || isSmileWord)
+                    ? cleanWord.toUpperCase()
+                    : String(word.text || "").trim();
 
-            const letters = Array.from(
-                String(word.text || "").trim()
-            );
 
+            // Create individual letter elements.
+            const letters = Array.from(displayText);
 
             letters.forEach((character, index) => {
 
-                const letterSpan =
-                    document.createElement("span");
+                const letterSpan = document.createElement("span");
 
                 letterSpan.className = "lyric-letter";
-
                 letterSpan.textContent = character;
 
+                if (isDandelionsWord) {
 
-                // Each letter gets a slightly delayed animation.
+                    letterSpan.classList.add("lyric-dandelion-letter");
 
-                letterSpan.style.animationDelay =
-                    `${index * 0.04}s`;
+                    letterSpan.classList.add(
+                        index % 2 === 0
+                            ? "from-below"
+                            : "from-above"
+                    );
 
+                    letterSpan.style.animationDelay = "0s";
+
+                } else {
+
+                    letterSpan.style.animationDelay =
+                        `${index * 0.04}s`;
+
+                }
 
                 wordSpan.appendChild(letterSpan);
 
             });
+
+
+            // Attach smile.png AFTER creating the letters.
+            if (isSmileWord) {
+
+                const finalLetter = wordSpan.lastElementChild;
+
+                finalLetter.classList.add("smile-final-letter");
+
+                const smileImage = document.createElement("img");
+
+                smileImage.src = "assets/smile.png";
+                smileImage.className = "smile-face-attachment";
+
+                smileImage.alt = "";
+                smileImage.draggable = false;
+
+                smileImage.setAttribute("aria-hidden", "true");
+
+                finalLetter.appendChild(smileImage);
+
+            }
 
 
             lyricsDisplay.appendChild(wordSpan);
@@ -436,8 +496,7 @@ function renderLine(line) {
     }
 
 
-    // Fallback for ordinary LRC lines.
-
+    // Fallback for lines without word-level timestamps.
     lyricsDisplay.textContent = line.text || "";
 
     console.warn(
@@ -580,6 +639,217 @@ function spawnSparkles(wordElement) {
 
 }
 
+// ============================================================
+// SEED ANIMATION TRACKING AND PLAYBACK CONTROL
+// ============================================================
+
+function trackSeedAnimation(animation, seed) {
+
+    // Register this animation.
+    seedAnimations.add(animation);
+
+    // If audio is already paused or the tab is hidden,
+    // freeze the newly created animation immediately.
+    if (audio.paused || document.hidden) {
+        animation.pause();
+    }
+
+    // Remove the seed after its animation finishes.
+    animation.addEventListener("finish", () => {
+
+        seedAnimations.delete(animation);
+        seed.remove();
+
+    }, { once: true });
+
+
+    // Remove cancelled animations from the tracker.
+    animation.addEventListener("cancel", () => {
+
+        seedAnimations.delete(animation);
+
+    }, { once: true });
+
+}
+
+
+// Pause every tracked seed.
+function pauseSeedAnimations() {
+
+    seedAnimations.forEach(animation => {
+
+        if (
+            animation.playState !== "paused" &&
+            animation.playState !== "finished" &&
+            animation.playState !== "idle"
+        ) {
+
+            animation.pause();
+
+        }
+
+    });
+
+}
+
+
+// Resume every tracked seed.
+function resumeSeedAnimations() {
+
+    // Never resume while audio is paused or the tab is hidden.
+    if (audio.paused || audio.ended || document.hidden) {
+        return;
+    }
+
+    seedAnimations.forEach(animation => {
+
+        if (animation.playState === "paused") {
+
+            animation.play();
+
+        }
+
+    });
+
+}
+
+// ============================================================
+// DANDELIONS WORD - FIVE FLOATING SEEDS
+// ============================================================
+
+function getSeedAnimationLayer() {
+
+    // Reuse the layer from the existing seed animation.
+    let seedLayer = document.querySelector(".seed-animation-layer");
+
+    if (!seedLayer) {
+
+        seedLayer = document.createElement("div");
+        seedLayer.className = "seed-animation-layer";
+
+        document.body.appendChild(seedLayer);
+
+    }
+
+    return seedLayer;
+
+}
+
+
+function spawnDandelionSeeds(wordElement) {
+
+    const seedLayer = getSeedAnimationLayer();
+    const wordRect = wordElement.getBoundingClientRect();
+
+    const seedCount = 5;
+
+    // ONE common starting point: centre of the word.
+    const startX = wordRect.left + wordRect.width / 2;
+    const startY = wordRect.top + wordRect.height / 2;
+
+    for (let i = 0; i < seedCount; i++) {
+
+        const seed = document.createElement("img");
+
+        seed.className = "lyric-dandelion-seed";
+        seed.src = "assets/dandelion_seed.png";
+        seed.alt = "";
+        seed.draggable = false;
+
+        seed.setAttribute("aria-hidden", "true");
+
+        seed.style.left = `${startX}px`;
+        seed.style.top = `${startY}px`;
+        seed.style.width = `${24 + Math.random() * 4}px`;
+
+        seedLayer.appendChild(seed);
+
+
+        // Each seed gets a different direction AFTER originating together.
+        const spreadDirection = i - 2;
+
+        const driftX =
+            spreadDirection * 52 + (Math.random() - 0.5) * 20;
+
+        const sway = 20 + Math.random() * 25;
+
+        const direction = Math.random() < 0.5 ? -1 : 1;
+
+        // Travel beyond the top edge.
+        const rise = startY + 55;
+
+        const duration = 4800 + Math.random() * 1800;
+
+
+        const keyframes = [
+
+            // All five seeds begin at exactly the same position.
+            {
+                offset: 0,
+                opacity: 1,
+                transform:
+                    `translate(-50%, -100%) translate(0px, 0px) scale(0.55)`
+            },
+
+            // They begin separating from their common origin.
+            {
+                offset: 0.10,
+                opacity: 1,
+                transform:
+                    `translate(-50%, -100%)
+                     translate(${driftX * 0.10}px, ${-rise * 0.10}px)
+                     scale(0.8)`
+            },
+
+            // Fan out into individual floating paths.
+            {
+                offset: 0.38,
+                opacity: 1,
+                transform:
+                    `translate(-50%, -100%)
+                     translate(${driftX * 0.38 + sway * direction}px, ${-rise * 0.38}px)
+                     scale(1)`
+            },
+
+            {
+                offset: 0.70,
+                opacity: 1,
+                transform:
+                    `translate(-50%, -100%)
+                     translate(${driftX * 0.70 - sway * direction}px, ${-rise * 0.70}px)
+                     scale(0.96)`
+            },
+
+            // Finish above the screen.
+            {
+                offset: 1,
+                opacity: 1,
+                transform:
+                    `translate(-50%, -100%)
+                     translate(${driftX}px, ${-rise}px)
+                     scale(0.9)`
+            }
+
+        ];
+
+
+        const animation = seed.animate(
+            keyframes,
+            {
+                duration,
+                easing: "linear",
+                fill: "forwards"
+            }
+        );
+
+
+        // Track this seed so audio pause freezes it too.
+        trackSeedAnimation(animation, seed);
+
+    }
+
+}
+
 
 // ============================================================
 // 5. WORD VISIBILITY AND ANIMATION
@@ -587,29 +857,87 @@ function spawnSparkles(wordElement) {
 
 function updateWordVisibility(currentTime) {
 
-    const wordsOnScreen =
-        lyricsDisplay.querySelectorAll(".lyric-word");
+    const wordsOnScreen = Array.from(
+        lyricsDisplay.querySelectorAll(".lyric-word")
+    );
+
+
+    // Find the latest reached spotlight word: MINE or SMILE.
+    let spotlightWordToShow = null;
 
     wordsOnScreen.forEach(span => {
 
-        const wordStart =
-            Number(span.dataset.time);
+        const isSpotlightWord =
+            span.classList.contains("lyric-mine") ||
+            span.classList.contains("lyric-smile");
 
-        const isVisible =
+        if (!isSpotlightWord) {
+            return;
+        }
+
+        const wordStart = Number(span.dataset.time);
+
+        if (
+            Number.isFinite(wordStart) &&
+            currentTime >= wordStart
+        ) {
+
+            if (
+                !spotlightWordToShow ||
+                wordStart >= Number(spotlightWordToShow.dataset.time)
+            ) {
+                spotlightWordToShow = span;
+            }
+
+        }
+
+    });
+
+    const mineSpotlightActive = spotlightWordToShow !== null;
+
+    lyricsDisplay.classList.toggle(
+        "mine-spotlight-active",
+        mineSpotlightActive
+    );
+
+
+    wordsOnScreen.forEach(span => {
+
+        const wordStart = Number(span.dataset.time);
+
+        const timestampReached =
             Number.isFinite(wordStart) &&
             currentTime >= wordStart;
 
 
-        // Make the word and its letters visible.
+        // MINE gets the screen alone.
+        const isVisible = mineSpotlightActive
+        ? span === spotlightWordToShow
+        : timestampReached;
 
         span.classList.toggle(
-            "is-visible",
-            isVisible
+            "is-mine-spotlight",
+            span === spotlightWordToShow
         );
 
+        span.classList.toggle("is-visible", isVisible);
 
-        // Trigger sparkles only once per word appearance.
 
+        // Five seeds whenever DANDELIONS reaches its timestamp.
+        if (
+            timestampReached &&
+            span.classList.contains("lyric-dandelions") &&
+            span.dataset.dandelionSeedsPlayed !== "true"
+        ) {
+
+            span.dataset.dandelionSeedsPlayed = "true";
+
+            spawnDandelionSeeds(span);
+
+        }
+
+
+        // Existing sparkles for NAME, GAME and MINE.
         if (
             isVisible &&
             span.classList.contains("lyric-highlight") &&
@@ -773,6 +1101,7 @@ function syncLyricsFrame() {
     // Synchronize Liricle with the current audio position.
 
     liricle.sync(audio.currentTime, false);
+    checkNaturalSeedStart();
 
     // Update word visibility on every animation frame.
 
@@ -805,6 +1134,9 @@ function startPlaybackLoops() {
 
     }
 
+    // Resume all previously paused seed animations.
+    resumeSeedAnimations();
+
     // Start visualizer.
 
     if (visualizerFrameId === null) {
@@ -817,6 +1149,9 @@ function startPlaybackLoops() {
     // Synchronize lyrics immediately.
 
     liricle.sync(audio.currentTime, true);
+
+    // Start natural seeds if playback resumes beyond 2:54.
+    checkNaturalSeedStart();
 
     updateWordVisibility(audio.currentTime);
 
@@ -837,6 +1172,8 @@ function startPlaybackLoops() {
 // ============================================================
 
 function stopLyricsLoop() {
+
+    pauseSeedAnimations();
 
     if (lyricsFrameId !== null) {
 
@@ -882,6 +1219,7 @@ audio.addEventListener("seeked", () => {
     // Update lyrics when the user moves the audio timeline.
 
     liricle.sync(audio.currentTime, true);
+    checkNaturalSeedStart();
 
     updateWordVisibility(audio.currentTime);
 
@@ -895,5 +1233,242 @@ audio.addEventListener("seeked", () => {
 liricle.load({
 
     url: "assets/dandelions_enhanced.lrc"
+
+});
+
+// ============================================================
+// 12. FLYING DANDELION SEEDS
+// ============================================================
+
+function startSeedAnimation() {
+
+    const seedLayer = getSeedAnimationLayer();
+
+    // Random number helper.
+    function random(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+
+
+    // Generate one flying seed.
+    function spawnFlyingSeed(delay = 0) {
+
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+
+        const seed = new Image();
+
+        seed.src = "assets/dandelion_seed.png";
+        seed.className = "flying-seed";
+        seed.alt = "";
+        seed.draggable = false;
+
+
+        // Keep the seed tiny.
+        const seedWidth = random(16, 24);
+
+        seed.style.width = `${seedWidth}px`;
+
+
+        // Starting position: completely outside the
+        // bottom-left desktop boundary.
+
+        const startX = random(
+            -seedWidth - 35,
+            -seedWidth - 12
+        );
+
+        const startY = random(
+            viewportHeight + 12,
+            viewportHeight + 55
+        );
+
+
+        // Destination: top-middle OR top-right.
+        const destinationX = Math.random() < 0.45
+            ? random(viewportWidth * 0.45, viewportWidth * 0.63)
+            : random(viewportWidth * 0.74, viewportWidth * 0.94);
+
+        // Destination is beyond the top edge of the screen.
+        const destinationY = -45;
+
+
+        const dx = destinationX - startX;
+        const dy = destinationY - startY;
+
+
+        // Give each seed a slightly different floating path.
+        const sway = random(25, 65);
+
+        const direction = Math.random() < 0.5 ? -1 : 1;
+
+        seed.style.left = `${startX}px`;
+        seed.style.top = `${startY}px`;
+
+        seedLayer.appendChild(seed);
+
+
+        // Build the floating journey.
+        const keyframes = [
+
+            {
+                offset: 0,
+
+                opacity: 1,
+
+                transform:
+                    `translate(0, 0) rotate(${random(-20, 20)}deg) scale(0.8)`
+            },
+
+            {
+                offset: 0.12,
+
+                opacity: 1,
+
+                transform:
+                    `translate(${dx * 0.12}px, ${dy * 0.12}px)
+                     rotate(${random(-10, 15)}deg)
+                     scale(1)`
+            },
+
+            {
+                offset: 0.34,
+
+                opacity: 1,
+
+                transform:
+                    `translate(${dx * 0.34 + sway * direction}px, ${dy * 0.32}px)
+                     rotate(${random(10, 25)}deg)
+                     scale(1.05)`
+            },
+
+            {
+                offset: 0.57,
+
+                opacity: 1,
+
+                transform:
+                    `translate(${dx * 0.57 - sway * direction}px, ${dy * 0.58}px)
+                     rotate(${random(-25, -10)}deg)
+                     scale(0.95)`
+            },
+
+            {
+                offset: 0.82,
+
+                opacity: 1,
+
+                transform:
+                    `translate(${dx * 0.82 + sway * 0.5 * direction}px, ${dy * 0.83}px)
+                     rotate(${random(5, 20)}deg)
+                     scale(0.9)`
+            },
+
+            {
+                offset: 1,
+
+                opacity: 1,
+
+                transform:
+                    `translate(${dx}px, ${dy}px)
+                     rotate(${random(-20, 20)}deg)
+                     scale(0.8)`
+            }
+
+        ];
+
+
+        // Animate the seed.
+        const animation = seed.animate(
+            keyframes,
+            {
+                duration: random(9500, 14000),
+                delay: delay,
+                easing: "linear",
+                fill: "forwards"
+            }
+        );
+
+        // Track this natural seed using the shared tracker.
+        trackSeedAnimation(animation, seed);
+
+    }
+
+
+    // Initial floating seeds.
+    for (let i = 0; i < NATURAL_INITIAL_SEED_COUNT; i++) {
+        spawnFlyingSeed(i * 700);
+    }
+
+
+    // Continuously introduce new seeds.
+    window.setInterval(() => {
+
+        // Never create new seeds while paused, ended,
+        // or when the browser tab is hidden.
+        if (audio.paused || audio.ended || document.hidden) {
+            return;
+        }
+
+        for (let i = 0; i < NATURAL_SEEDS_PER_INTERVAL; i++) {
+            spawnFlyingSeed(i * 250);
+        }
+
+    }, NATURAL_SEED_INTERVAL);
+
+}
+
+// =========================================
+// NATURAL FLOATING SEED SETTINGS
+// =========================================
+
+const NATURAL_SEED_START_TIME = 174; // 2:54
+
+const NATURAL_INITIAL_SEED_COUNT = 5;
+
+const NATURAL_SEEDS_PER_INTERVAL = 5;
+
+const NATURAL_SEED_INTERVAL = 1900;
+
+let naturalSeedsStarted = false;
+
+
+// Check whether natural seeds should begin.
+function checkNaturalSeedStart() {
+
+    // Do not start the effect while paused or hidden.
+    if (
+        !naturalSeedsStarted &&
+        !audio.paused &&
+        !audio.ended &&
+        !document.hidden &&
+        audio.currentTime >= NATURAL_SEED_START_TIME
+    ) {
+
+        naturalSeedsStarted = true;
+
+        startSeedAnimation();
+
+    }
+
+}
+
+// =========================================
+// PAUSE / RESUME SEEDS ON TAB SWITCH
+// =========================================
+
+document.addEventListener("visibilitychange", () => {
+
+    if (document.hidden) {
+
+        // Freeze every seed when leaving the tab.
+        pauseSeedAnimations();
+
+    } else {
+
+        // Resume seeds only if audio is playing.
+        resumeSeedAnimations();
+
+    }
 
 });

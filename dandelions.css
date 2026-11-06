@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:wght@600;700&display=swap');
 body {
     margin: 0;
     height: 100vh;
@@ -272,14 +271,13 @@ h1 {
 ========================================= */
 
 .lyric-word.lyric-highlight {
-    /* Keep the word in the normal sentence flow */
     justify-content: center;
 
-    /* Slightly larger text */
-    font-size: 1.30em;
+    /* Same font size as the surrounding lyrics */
+    font-size: inherit;
     font-weight: 700;
 
-    /* Golden amber instead of brown */
+    /* Retain the golden highlight colour */
     color: #C58A00;
 
     position: relative;
@@ -358,9 +356,10 @@ h1 {
 
     background: radial-gradient(
         circle,
-        #FFF9D6 0%,
-        #FFD700 45%,
-        #E6A700 100%
+        #FFFFFF 0%,
+        #FFFFFF 45%,
+        #F4F8FF 75%,
+        #DDEBFF 100%
     );
 
     clip-path: polygon(
@@ -419,4 +418,275 @@ h1 {
         transform: none;
     }
 
+}
+
+/* Make white sparkles stand out against the warm background */
+.lyric-sparkle {
+    scale: 1.7;
+
+    filter:
+        brightness(1.5);
+    animation-duration: 1.6s !important;
+}
+
+/* =========================================
+   FLYING DANDELION SEEDS
+========================================= */
+
+.seed-animation-layer {
+    position: fixed;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+    pointer-events: none;
+
+    z-index: 100;
+}
+
+.flying-seed {
+    position: absolute;
+
+    width: 26px;
+    height: auto;
+
+    display: block;
+    object-fit: contain;
+
+    border: none;
+    border-radius: 0;
+
+    opacity: 1 !important;
+
+    transform-origin: center center;
+    will-change: transform, opacity;
+
+    filter:
+        brightness(1.12)
+        drop-shadow(0 1px 2px rgba(80, 60, 25, 0.8));
+}
+
+/* =========================================
+   MINE - SPECIAL SPOTLIGHT MOMENT
+========================================= */
+
+/* Hide every other word when MINE is active */
+#lyrics-display.mine-spotlight-active
+.lyric-word:not(.is-mine-spotlight) {
+    display: none;
+}
+
+
+/* =========================================
+   MINE + SMILE - SHARED SPOTLIGHT STYLE
+========================================= */
+
+.lyric-word.lyric-mine,
+.lyric-word.lyric-smile {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.45em;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    color: #C58A00;
+
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+
+    position: relative;
+    isolation: isolate;
+
+    text-shadow:
+        0 2px 10px rgba(197, 138, 0, 0.16);
+}
+
+/* LOVE - Heart Pink */
+.lyric-word.lyric-love {
+    color: #E75480;
+}
+
+/* =========================================
+   DANDELIONS - SPECIAL TYPOGRAPHY
+========================================= */
+
+.lyric-word.lyric-dandelions {
+    /* Force DANDELIONS onto its own line */
+    flex: 0 0 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(3.4rem, 5vw, 4.8rem);
+    font-weight: 700;
+
+    text-transform: uppercase;
+    white-space: nowrap;
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+
+    color: #FFFFFF;
+
+    text-shadow:
+        0 1px 3px rgba(105, 75, 25, 0.38),
+        0 3px 12px rgba(105, 75, 25, 0.16);
+
+    overflow: visible;
+    isolation: isolate;
+}
+
+
+/* =========================================
+   DANDELIONS - SMOOTH ALTERNATING ENTRANCE
+========================================= */
+
+.lyric-word.lyric-dandelions .lyric-dandelion-letter {
+    opacity: 0;
+    display: inline-block;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+}
+
+/* Starting positions */
+.lyric-word.lyric-dandelions .from-below {
+    transform: translateY(90px);
+}
+
+.lyric-word.lyric-dandelions .from-above {
+    transform: translateY(-90px);
+}
+
+/* All letters start and finish together */
+.lyric-word.lyric-dandelions.is-visible
+.lyric-dandelion-letter.from-below {
+    animation: dandelionLetterFromBelow
+        0.48s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.lyric-word.lyric-dandelions.is-visible
+.lyric-dandelion-letter.from-above {
+    animation: dandelionLetterFromAbove
+        0.48s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+
+/* From below */
+@keyframes dandelionLetterFromBelow {
+    from {
+        opacity: 0.05;
+        transform: translateY(90px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* From above */
+@keyframes dandelionLetterFromAbove {
+    from {
+        opacity: 0.05;
+        transform: translateY(-90px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================
+   FIVE FULL-OPACITY DANDELION SEEDS
+========================================= */
+
+.lyric-dandelion-seed {
+    position: absolute;
+
+    display: block;
+    width: 26px;
+    height: auto;
+
+    object-fit: contain;
+
+    border: none;
+    border-radius: 0;
+
+    padding: 0;
+    margin: 0;
+
+    opacity: 1 !important;
+
+    pointer-events: none;
+    z-index: 101;
+
+    transform-origin: center center;
+    will-change: transform;
+
+    filter:
+        brightness(1.12)
+        drop-shadow(0 1px 2px rgba(80, 60, 25, 0.8));
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+    .lyric-word.lyric-dandelions.is-visible
+    .lyric-dandelion-letter.from-below,
+    .lyric-word.lyric-dandelions.is-visible
+    .lyric-dandelion-letter.from-above {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.lyric-word.lyric-god {
+    color: #2878C7;
+}
+
+/* SMILE - PNG POSITIONING */
+
+.lyric-smile .smile-final-letter {
+    position: relative;
+    display: inline-block;
+    overflow: visible;
+}
+
+.smile-face-attachment {
+    position: absolute;
+
+    width: 1em;
+    height: auto;
+
+    right: -0.48em;
+    bottom: -0.26em;
+
+    display: block;
+    border: none;
+    border-radius: 0;
+
+    object-fit: contain;
+
+    transform: rotate(-25deg);
+
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* Keep SMILE words out of normal sentence layout */
+#lyrics-display .lyric-word.lyric-smile {
+    display: none;
+}
+
+/* Display only the active SMILE during its spotlight */
+#lyrics-display.mine-spotlight-active
+.lyric-word.lyric-smile.is-mine-spotlight {
+    display: inline-flex;
 }
