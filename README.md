@@ -4,6 +4,8 @@ An audio-reactive music visualizer inspired by **“Dandelions” performed by R
 
 DANDELIONS is a browser-based project built with HTML, CSS, and JavaScript.
 
+![DANDELIONS music visualizer preview](assets/dandelions-preview.png)
+
 ## Features
 
 - **Audio-reactive visualizer** — the central image and surrounding bars respond to the audio.
@@ -91,6 +93,6 @@ Code improvements may be proposed through pull requests from your own fork. Ever
 
 DANDELIONS is being prepared for release under a custom, restrictive source-available license.
 
-The intended permissions are to allow people to run an unmodified copy and to modify a fork solely to prepare a contribution proposal. The project is not intended to grant general permission to publish or redistribute independently modified versions.
+DANDELIONS is governed by the custom license provided in [LICENSE](LICENSE).
 
-The formal **LICENSE** file will define these permissions and restrictions. Until it is added, all rights not granted by GitHub's Terms of Service for public repositories are reserved. Do not assume that public visibility grants permission to reuse or redistribute the project's code or assets.
+Please read the license before using the project. Public visibility of this repository does not grant additional rights to modify, redistribute, or reuse the project beyond the permissions expressly stated in the license.
