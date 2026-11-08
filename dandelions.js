@@ -8,6 +8,64 @@ const lyricsDisplay = document.getElementById("lyrics-display");
 // Track every seed animation: natural seeds + lyric-triggered seeds.
 const seedAnimations = new Set();
 
+let endingFadeTimeout = null;
+
+const ENDING_FADE_DURATION = 1400;
+
+function clearSeedAnimationsAndLayer() {
+
+    seedAnimations.forEach(animation => {
+        animation.cancel();
+    });
+
+    seedAnimations.clear();
+
+    document.querySelector(".seed-animation-layer")?.remove();
+
+}
+
+
+function fadeOutFinishedVisuals() {
+
+    document.body.classList.add("playback-ended");
+
+    if (endingFadeTimeout !== null) {
+        window.clearTimeout(endingFadeTimeout);
+    }
+
+    endingFadeTimeout = window.setTimeout(() => {
+
+        clearSeedAnimationsAndLayer();
+
+        endingFadeTimeout = null;
+
+    }, ENDING_FADE_DURATION);
+
+}
+
+
+function resetFinishedVisuals() {
+
+    const wasFadingOut =
+        document.body.classList.contains("playback-ended");
+
+    if (endingFadeTimeout !== null) {
+
+        window.clearTimeout(endingFadeTimeout);
+
+        endingFadeTimeout = null;
+
+    }
+
+    document.body.classList.remove("playback-ended");
+
+    // Do not bring the previous track's seeds back when replaying.
+    if (wasFadingOut) {
+        clearSeedAnimationsAndLayer();
+    }
+
+}
+
 
 // ============================================================
 // 1. AUDIO VISUALIZER - REFINED SONG4 LOGIC
@@ -387,7 +445,7 @@ function renderLine(line) {
             const isLoveWord = cleanWord === "love";
             const isSmileWord = cleanWord === "smile";
             const isGodWord = cleanWord === "god";
-            const isDandelionsWord = cleanWord === "dandelions";
+            const isDandelionsWord = ["dandelion", "dandelions"].includes(cleanWord);
             const isNameOrGame = ["name", "game"].includes(cleanWord);
 
 
@@ -1119,6 +1177,8 @@ function syncLyricsFrame() {
 
 function startPlaybackLoops() {
 
+    resetFinishedVisuals();
+
     // Resume Web Audio when required.
 
     if (audioCtx.state === "suspended") {
@@ -1208,7 +1268,13 @@ audio.addEventListener(
 
 audio.addEventListener(
     "ended",
-    stopLyricsLoop
+    () => {
+
+        stopLyricsLoop();
+
+        fadeOutFinishedVisuals();
+
+    }
 );
 
 
