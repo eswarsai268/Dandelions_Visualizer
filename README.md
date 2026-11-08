@@ -91,8 +91,8 @@ Code improvements may be proposed through pull requests from your own fork. Ever
 
 ## License and permissions
 
-DANDELIONS is being prepared for release under a custom, restrictive source-available license.
+DANDELIONS Visualizer is being prepared for release under a custom, restrictive source-available license.
 
-DANDELIONS is governed by the custom license provided in [LICENSE](LICENSE).
+DANDELIONS Visualizer is governed by the custom license provided in [LICENSE](LICENSE).
 
 Please read the license before using the project. Public visibility of this repository does not grant additional rights to modify, redistribute, or reuse the project beyond the permissions expressly stated in the license.
