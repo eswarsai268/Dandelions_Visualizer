@@ -91,14 +91,8 @@ Code improvements may be proposed through pull requests from your own fork. Ever
 
 ## License and permissions
 
-<<<<<<< HEAD
 DANDELIONS Visualizer is being prepared for release under a custom, restrictive source-available license.
 
 DANDELIONS Visualizer is governed by the custom license provided in [LICENSE](LICENSE).
-=======
-DANDELIONS is governed by the custom, restrictive source-available terms in [LICENSE](LICENSE). This is not an open-source license.
-
-You may run an unmodified copy under the permissions described in the license. You may also prepare a proposed contribution in your own fork. If you publicly showcase a modified version, identify it as an unofficial modification, credit the original project and creator, and link to the [official DANDELIONS repository](https://github.com/eswarsai268/Dandelions_Visualizer).
->>>>>>> 80126a672a23dd0e45eec8db43cdc1ad889aab77
 
 Public repository visibility allows viewing and forking through GitHub, but it does not grant broader reuse or redistribution rights. Read [LICENSE](LICENSE) for the exact permissions and restrictions. Third-party music, lyrics, images, fonts, and libraries remain subject to their respective rights and terms.

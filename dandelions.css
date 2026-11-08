@@ -3,49 +3,40 @@ body {
     margin: 0;
     height: 100vh;
     overflow: hidden;
-
     background: linear-gradient(
         135deg,
         #ffffff 0%,
         #fffde7 -5%,
         #fff59d 54%
     );
-
     font-family: 'Arial', sans-serif;
 }
 
 /* --- SPLIT SCREEN LAYOUT --- */
-
 .split-screen {
     display: flex;
     width: 100vw;
     height: 100vh;
 }
-
 .visualizer-half {
     width: 50%;
     height: 100%;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
-
 .lyrics-half {
     width: 50%;
     height: 100%;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     padding: 0 40px;
     box-sizing: border-box;
 }
 
 /* --- VISUALIZER LAYOUT --- */
-
 .box {
     display: flex;
     justify-content: center;
@@ -56,137 +47,102 @@ body {
 }
 
 /* Image container */
-
 .container {
     width: 380px;
     height: 380px;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     background: linear-gradient(
         45deg,
         #ffe082 0%,
         #ffca28 100%
     );
-
     border-radius: 10px;
-
     box-shadow: 0px 10px 30px rgba(0,0,0,0.15);
-
     z-index: 2;
 }
 
 /* Image */
-
 img {
     display: block;
-
     width: 240px;
     height: 240px;
-
     object-fit: cover;
     border-radius: 0;
-
     border: 4px solid white;
-
     transition: none;
     will-change: transform;
     transform-origin: center center;
 }
 
 /* --- VISUALIZER BARS --- */
-
 .left,
 .right {
     height: 380px;
     width: 120px;
 }
-
 .bar {
     height: 6px;
     width: 20px;
-
     flex-shrink: 0;
-
     transition: none;
-
     will-change: width;
 }
-
 .left .bar {
     transform-origin: right;
-
     background: linear-gradient(
         270deg,
         white,
         #ffca28
     );
-
     border-radius: 5px 0 0 5px;
 }
-
 .right .bar {
     transform-origin: left;
-
     background: linear-gradient(
         90deg,
         white,
         #ffca28
     );
-
     border-radius: 0 5px 5px 0;
 }
-
 .left {
     display: flex;
     flex-direction: column;
-
     align-items: end;
     gap: 7px;
     justify-content: center;
-
     margin-right: -5px;
 }
-
 .right {
     display: flex;
     flex-direction: column;
-
     align-items: start;
     gap: 7px;
     justify-content: center;
-
     margin-left: -5px;
 }
 
 /* --- AUDIO PLAYER & TITLE --- */
-
 .audio-container {
     width: 380px;
-
     background: linear-gradient(
         135deg,
         #ffdc78 0%,
         #ffc94d 55%,
         #ffbd2e 100%
     );
-
     margin: 20px auto 0;
-
     text-align: center;
     padding: 15px 0;
-
     border-radius: 15px;
-
     box-shadow:
         0px 0px 25px rgba(255, 215, 0, 0.5),
         0px 4px 15px rgba(0,0,0,0.1);
 }
 
 /* Audio controls */
-
 audio::-webkit-media-controls-panel {
     background: linear-gradient(
         90deg,
@@ -195,14 +151,12 @@ audio::-webkit-media-controls-panel {
         #ffc239 100%
     );
 }
-
 audio {
     width: 85%;
     border-radius: 30px;
 }
 
 /* Song title */
-
 h1 {
     font-family: 'Playfair Display', serif;
 
@@ -219,39 +173,30 @@ h1 {
 /* =========================================
    DANDELIONS - DEFAULT LYRICS THEME
 ========================================= */
-
 #lyrics-display {
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
-
     display: flex;
     flex-wrap: wrap;
-
     justify-content: center;
     align-content: center;
     align-items: center;
-
     column-gap: 0.30em;
     row-gap: 0.22em;
-
     font-family: 'Playfair Display', serif;
     font-size: clamp(2.8rem, 3.8vw, 4rem);
     font-weight: 700;
     line-height: 1.4;
-
     text-align: center;
     color: #754512;
-
     text-shadow: none;
     margin: 0;
 }
 
-
 /* =========================================
    NORMAL LYRIC WORDS
 ========================================= */
-
 .lyric-word {
     display: inline-flex;
     white-space: nowrap;
@@ -259,81 +204,57 @@ h1 {
     opacity: 0;
     position: relative;
 }
-
 .lyric-word.is-visible {
     opacity: 1;
 }
 
-
 /* =========================================
-   SPECIAL HIGHLIGHT WORDS
-   NAME + GAME
+   SPECIAL HIGHLIGHT WORDS -- NAME + GAME
 ========================================= */
-
 .lyric-word.lyric-highlight {
     justify-content: center;
-
-    /* Same font size as the surrounding lyrics */
     font-size: inherit;
     font-weight: 700;
-
-    /* Retain the golden highlight colour */
     color: #C58A00;
-
     position: relative;
     isolation: isolate;
 }
 
-
 /* =========================================
    INDIVIDUAL LETTERS
 ========================================= */
-
 .lyric-letter {
     display: inline-block;
-
     opacity: 0;
-
     transform: translateY(12px) scale(0.75);
 }
-
-
-/* Same letter-by-letter animation for ALL words */
-
 .lyric-word.is-visible .lyric-letter {
     animation: letterPop 0.32s
         cubic-bezier(0.175, 0.885, 0.32, 1.275)
         forwards;
 }
 
-
 /* =========================================
    LETTER POP ANIMATION
 ========================================= */
-
 @keyframes letterPop {
-
     0% {
         opacity: 0;
         transform: translateY(12px) scale(0.75);
     }
-
     70% {
         opacity: 1;
         transform: translateY(-3px) scale(1.12);
     }
-
     100% {
         opacity: 1;
         transform: translateY(0) scale(1);
     }
-
 }
 
 /* =========================================
    REAL GOLDEN PARTICLE EFFECT
 ========================================= */
-
 .lyric-word.lyric-highlight {
     position: relative;
     overflow: visible;
@@ -343,17 +264,13 @@ h1 {
 /* =========================================
    GOLDEN SPARKLES AROUND THE ENTIRE WORD
 ========================================= */
-
 .lyric-sparkle {
     position: absolute;
-
     /* Position determined individually by JavaScript */
     left: var(--sparkle-left);
     top: var(--sparkle-top);
-
     width: var(--sparkle-size, 5px);
     height: var(--sparkle-size, 5px);
-
     background: radial-gradient(
         circle,
         #FFFFFF 0%,
@@ -361,7 +278,6 @@ h1 {
         #F4F8FF 75%,
         #DDEBFF 100%
     );
-
     clip-path: polygon(
         50% 0%,
         62% 38%,
@@ -372,29 +288,21 @@ h1 {
         0% 50%,
         38% 38%
     );
-
     opacity: 0;
     pointer-events: none;
     z-index: 5;
-
     animation: sparkleBurst 850ms ease-out forwards;
-
     animation-delay: var(--sparkle-delay, 0ms);
 }
-
-
 @keyframes sparkleBurst {
-
     0% {
         opacity: 0;
         transform: translate(-50%, -50%) scale(0.2);
     }
-
     25% {
         opacity: 1;
         transform: translate(-50%, -50%) scale(1.15);
     }
-
     100% {
         opacity: 0;
         transform:
@@ -405,25 +313,18 @@ h1 {
             scale(0.15)
             rotate(120deg);
     }
-
 }
 
 /* Accessibility */
-
 @media (prefers-reduced-motion: reduce) {
-
     .lyric-word.is-visible .lyric-letter {
         animation: none;
         opacity: 1;
         transform: none;
     }
-
 }
-
-/* Make white sparkles stand out against the warm background */
 .lyric-sparkle {
     scale: 1.7;
-
     filter:
         brightness(1.5);
     animation-duration: 1.6s !important;
@@ -432,72 +333,49 @@ h1 {
 /* =========================================
    FLYING DANDELION SEEDS
 ========================================= */
-
 .seed-animation-layer {
     position: fixed;
     inset: 0;
-
     width: 100%;
     height: 100%;
-
     overflow: hidden;
     pointer-events: none;
-
     z-index: 100;
 }
-
 .flying-seed {
     position: absolute;
-
     width: 26px;
     height: auto;
-
     display: block;
     object-fit: contain;
-
     border: none;
     border-radius: 0;
-
     opacity: 1 !important;
-
     transform-origin: center center;
     will-change: transform, opacity;
-
     filter:
         brightness(1.12)
         drop-shadow(0 1px 2px rgba(80, 60, 25, 0.8));
 }
 
 /* =========================================
-   MINE - SPECIAL SPOTLIGHT MOMENT
+   MINE + SMILE - SPECIAL SPOTLIGHT MOMENT
 ========================================= */
-
-/* Hide every other word when MINE is active */
 #lyrics-display.mine-spotlight-active
 .lyric-word:not(.is-mine-spotlight) {
     display: none;
 }
-
-
-/* =========================================
-   MINE + SMILE - SHARED SPOTLIGHT STYLE
-========================================= */
-
 .lyric-word.lyric-mine,
 .lyric-word.lyric-smile {
     font-family: 'Dancing Script', cursive;
     font-size: 1.45em;
     font-weight: 700;
-
     text-transform: uppercase;
     color: #C58A00;
-
     line-height: 1.15;
     letter-spacing: 0.02em;
-
     position: relative;
     isolation: isolate;
-
     text-shadow:
         0 2px 10px rgba(197, 138, 0, 0.16);
 }
@@ -510,132 +388,98 @@ h1 {
 /* =========================================
    DANDELIONS - SPECIAL TYPOGRAPHY
 ========================================= */
-
 .lyric-word.lyric-dandelions {
     /* Force DANDELIONS onto its own line */
     flex: 0 0 100%;
     max-width: 100%;
     box-sizing: border-box;
-
     display: inline-flex;
     justify-content: center;
     align-items: center;
-
     font-family: 'Dancing Script', cursive;
     font-size: clamp(3.4rem, 5vw, 4.8rem);
     font-weight: 700;
-
     text-transform: uppercase;
     white-space: nowrap;
     line-height: 1.15;
     letter-spacing: 0.02em;
-
     color: #FFFFFF;
-
     text-shadow:
         0 1px 3px rgba(105, 75, 25, 0.38),
         0 3px 12px rgba(105, 75, 25, 0.16);
-
     overflow: visible;
     isolation: isolate;
 }
 
-
 /* =========================================
    DANDELIONS - SMOOTH ALTERNATING ENTRANCE
 ========================================= */
-
 .lyric-word.lyric-dandelions .lyric-dandelion-letter {
     opacity: 0;
     display: inline-block;
     will-change: transform, opacity;
     backface-visibility: hidden;
 }
-
 /* Starting positions */
 .lyric-word.lyric-dandelions .from-below {
     transform: translateY(90px);
 }
-
 .lyric-word.lyric-dandelions .from-above {
     transform: translateY(-90px);
 }
-
-/* All letters start and finish together */
 .lyric-word.lyric-dandelions.is-visible
 .lyric-dandelion-letter.from-below {
     animation: dandelionLetterFromBelow
         0.48s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
-
 .lyric-word.lyric-dandelions.is-visible
 .lyric-dandelion-letter.from-above {
     animation: dandelionLetterFromAbove
         0.48s cubic-bezier(0.4, 0, 0.2, 1) both;
 }
-
-
-/* From below */
 @keyframes dandelionLetterFromBelow {
     from {
         opacity: 0.05;
         transform: translateY(90px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
-
-
-/* From above */
 @keyframes dandelionLetterFromAbove {
     from {
         opacity: 0.05;
         transform: translateY(-90px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
 
-
 /* =========================================
    FIVE FULL-OPACITY DANDELION SEEDS
 ========================================= */
-
 .lyric-dandelion-seed {
     position: absolute;
-
     display: block;
     width: 26px;
     height: auto;
-
     object-fit: contain;
-
     border: none;
     border-radius: 0;
-
     padding: 0;
     margin: 0;
-
     opacity: 1 !important;
-
     pointer-events: none;
     z-index: 101;
-
     transform-origin: center center;
     will-change: transform;
-
     filter:
         brightness(1.12)
         drop-shadow(0 1px 2px rgba(80, 60, 25, 0.8));
 }
-
-
 @media (prefers-reduced-motion: reduce) {
     .lyric-word.lyric-dandelions.is-visible
     .lyric-dandelion-letter.from-below,
@@ -646,67 +490,51 @@ h1 {
         transform: none;
     }
 }
-
 .lyric-word.lyric-god {
     color: #2878C7;
 }
 
 /* SMILE - PNG POSITIONING */
-
 .lyric-smile .smile-final-letter {
     position: relative;
     display: inline-block;
     overflow: visible;
 }
-
 .smile-face-attachment {
     position: absolute;
-
     width: 1em;
     height: auto;
-
     right: -0.48em;
     bottom: -0.26em;
-
     display: block;
     border: none;
     border-radius: 0;
-
     object-fit: contain;
-
     transform: rotate(-25deg);
-
     pointer-events: none;
     z-index: 5;
 }
-
 /* Keep SMILE words out of normal sentence layout */
 #lyrics-display .lyric-word.lyric-smile {
     display: none;
 }
-
-/* Display only the active SMILE during its spotlight */
 #lyrics-display.mine-spotlight-active
 .lyric-word.lyric-smile.is-mine-spotlight {
     display: inline-flex;
 }
 
-
 /* =========================================
    FADE OUT LYRICS AND FLOATING SEEDS AT SONG END
 ========================================= */
-
 #lyrics-display,
 .seed-animation-layer {
     transition: opacity 1.4s ease;
 }
-
 body.playback-ended #lyrics-display,
 body.playback-ended .seed-animation-layer {
     opacity: 0;
     pointer-events: none;
 }
-
 @media (prefers-reduced-motion: reduce) {
     #lyrics-display,
     .seed-animation-layer {
