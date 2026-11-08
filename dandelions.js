@@ -20,7 +20,8 @@ function clearSeedAnimationsAndLayer() {
 
     seedAnimations.clear();
 
-    document.querySelector(".seed-animation-layer")?.remove();
+    // Keep the layer itself: the ambient seed interval reuses it on replay.
+    document.querySelector(".seed-animation-layer")?.replaceChildren();
 
 }
 
