@@ -87,7 +87,8 @@ img {
     width: 20px;
     flex-shrink: 0;
     transition: none;
-    will-change: width;
+    transform: scaleX(1);
+    will-change: transform;
 }
 .left .bar {
     transform-origin: right;
