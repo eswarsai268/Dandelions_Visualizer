@@ -98,7 +98,7 @@ function animateBars(bars, levels, deltaTime) {
         const smoothing = 1 - Math.exp(-deltaTime / smoothingTime);
         levels[index] += (targetWidth - levels[index]) * smoothing;
         const finalWidth = BASE_BAR_WIDTH + levels[index];
-        bar.style.width = `${finalWidth}px`;
+        bar.style.transform = `scaleX(${finalWidth / BASE_BAR_WIDTH})`;
     });
 }
 
@@ -126,7 +126,7 @@ function animateVisualizer(timestamp) {
             imageScale = 1;
             img.style.transform = "scale(1)";
             [...leftBars, ...rightBars].forEach(bar => {
-                bar.style.width = `${BASE_BAR_WIDTH}px`;
+                bar.style.transform = "scaleX(1)";
             });
             visualizerFrameId = null;
             previousFrameTime = 0;
