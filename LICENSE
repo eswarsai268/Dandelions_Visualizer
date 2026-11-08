@@ -1,0 +1,88 @@
+DANDELIONS CUSTOM SOURCE-AVAILABLE LICENSE
+Version 1.0
+Copyright (c) 2026 eswarsai268
+Official repository: https://github.com/eswarsai268/Dandelions_Visualizer
+
+IMPORTANT
+This is a custom, restrictive license. It is not an OSI-approved open-source license. It applies only to material in DANDELIONS that the copyright holder owns or is authorized to license. Third-party materials are addressed separately below.
+
+1. DEFINITIONS
+
+"Project" means the DANDELIONS music visualizer published at the official repository linked above.
+
+"Project Materials" means the original source code, project structure, original design and other material in the Project that is owned by the copyright holder.
+
+"Third-Party Materials" means music, sound recordings, lyrics, images, fonts, libraries and any other material that is owned by someone else or supplied under separate terms.
+
+"Official Repository" means https://github.com/eswarsai268/Dandelions_Visualizer.
+
+2. OWNERSHIP
+
+The copyright holder retains ownership of the Project Materials. No ownership, authorship or trademark rights are transferred to you by this license. All rights not expressly granted here are reserved.
+
+3. PERMISSION TO RUN AN UNMODIFIED COPY
+
+You may clone or download the Project and run an unmodified copy for personal, educational, internal or commercial use.
+
+This permission does not allow you to redistribute, sell, sublicense, repackage or offer copies of the Project to others, or to incorporate the Project Materials into another product or project.
+
+GitHub's own Terms of Service permit users to view and fork public repositories through GitHub's features. This license does not attempt to remove those GitHub platform rights. A GitHub fork does not grant additional permissions beyond the rights provided by GitHub and the limited permissions in this license.
+
+4. LIMITED PERMISSION TO PREPARE A CONTRIBUTION
+
+You may modify your own local copy or fork solely to inspect, test and prepare a proposed contribution for the Official Repository.
+
+You may submit the proposal through a GitHub issue or pull request. Submitting a proposal does not guarantee acceptance or merging. The project owner decides whether any proposal is accepted.
+
+This permission is limited to preparing a proposal. It does not grant general permission to publish, distribute, sell, sublicense or otherwise provide modified source code or modified project packages to others.
+
+5. PUBLIC SHOWCASE OF MODIFICATIONS
+
+You may publicly showcase your modifications through screenshots, screen recordings, videos, portfolio entries or written demonstrations, provided that you:
+
+(a) Clearly identify the work as an unofficial modification of DANDELIONS;
+(b) Give visible credit to the original project and its creator, using wording such as: "Based on DANDELIONS, originally created by eswarsai268";
+(c) Include a direct, accessible link to the Official Repository: https://github.com/eswarsai268/Dandelions_Visualizer;
+(d) Do not claim that you created the original DANDELIONS project or its original Project Materials; and
+(e) Do not imply that your modified version is the official project or is endorsed by the project owner.
+
+This showcase permission covers visual or written demonstrations only. It does not permit publishing or distributing the modified source code, downloadable modified project packages, or a publicly hosted runnable modified version. Separate written permission from the copyright holder is required for those activities.
+
+6. RESTRICTIONS
+
+Except for the limited permissions expressly stated in Sections 3, 4 and 5, you may not:
+
+- Modify, adapt or create derivative versions of the Project for independent publication or distribution;
+- Publish, redistribute, mirror, sell, sublicense, package or commercially distribute copies of the Project or modified versions;
+- Remove, obscure or alter copyright notices or original attribution included with the Project Materials;
+- Claim authorship or ownership of the original Project Materials;
+- Rename, rebrand or present the original Project as your own work; or
+- Use the DANDELIONS name or identity in a way that falsely suggests that your copy is official or endorsed by the project owner.
+
+You may accurately describe and identify your own modifications, but you must not misrepresent the origin of the original Project Materials.
+
+7. CONTRIBUTIONS
+
+A suggestion, issue or pull request does not automatically transfer ownership of a contributor's work to the project owner. Before accepting or merging an external code contribution, the project owner may require a separate written contributor agreement that sets out the necessary permissions for that contribution.
+
+8. THIRD-PARTY MATERIALS
+
+This license does not grant ownership of, or additional rights to, any Third-Party Materials included with or referenced by the Project. Such materials remain subject to the rights and license terms of their respective owners.
+
+In particular, the song, sound recording and lyrics associated with "Dandelions" performed by Ruth B., as well as third-party images, fonts and libraries, are not relicensed by this document. You are responsible for complying with the applicable terms and obtaining any permission required for your intended use of those materials.
+
+9. TERMINATION
+
+The permissions in this license terminate automatically if you materially violate its terms. Upon termination, you must stop exercising the permissions granted by this license. This does not affect rights that GitHub grants independently under its Terms of Service or rights that cannot legally be terminated.
+
+10. NO WARRANTY
+
+The Project Materials are provided "as is", without warranties or conditions of any kind, to the fullest extent permitted by applicable law.
+
+11. QUESTIONS AND ADDITIONAL PERMISSION
+
+For permission beyond the limited permissions in this license, contact the project owner through the Official Repository.
+
+---
+
+This is a custom license drafted to describe the project's intended permissions. It is not a substitute for legal advice or a jurisdiction-specific review.
