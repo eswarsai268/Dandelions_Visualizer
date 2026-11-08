@@ -690,3 +690,26 @@ h1 {
 .lyric-word.lyric-smile.is-mine-spotlight {
     display: inline-flex;
 }
+
+
+/* =========================================
+   FADE OUT LYRICS AND FLOATING SEEDS AT SONG END
+========================================= */
+
+#lyrics-display,
+.seed-animation-layer {
+    transition: opacity 1.4s ease;
+}
+
+body.playback-ended #lyrics-display,
+body.playback-ended .seed-animation-layer {
+    opacity: 0;
+    pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #lyrics-display,
+    .seed-animation-layer {
+        transition: none;
+    }
+}
